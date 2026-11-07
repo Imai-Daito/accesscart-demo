@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AccessCart · Sandbox checkout test</title>
+<style>body{font:18px/1.6 system-ui;background:#f4f1ea;color:#20372e;max-width:680px;margin:60px auto;padding:24px}main{background:white;padding:32px;border-radius:20px}button,a{font:inherit}button,.action{display:inline-block;padding:12px 20px;border-radius:8px;background:#185b45;color:white;border:0;margin:8px 8px 8px 0}button:disabled{opacity:.5}a:focus,button:focus{outline:3px solid #b86a00;outline-offset:4px}dl{display:grid;grid-template-columns:1fr auto}dd{margin:0}#status{padding:16px;background:#edf4ef;white-space:pre-line}</style>
+<main><p>ACCESSCART / CONNECTION TEST</p><h1>Review your test order</h1><p><strong>Sandbox only.</strong> No real payment or delivery. This is a connection test, not the complete shopping app.</p><dl><dt>Demo coffee · 2 × $14.00</dt><dd>$28.00</dd><dt>Fixed shipping</dt><dd>$5.00</dd><dt><strong>Total (USD)</strong></dt><dd><strong>$33.00</strong></dd></dl><p>After approval in PayPal, this test order cannot be changed. Refunds are not part of this test.</p><button id="create">Prepare Sandbox checkout</button><a id="approve" class="action" hidden>Continue to PayPal Sandbox</a><button id="check">Check payment status</button><button id="capture" hidden>Finish approved test payment</button><p id="status" role="status" aria-live="polite">Checking for an existing order…</p></main>
+<script>
+const statusEl=document.querySelector('#status'),create=document.querySelector('#create'),approve=document.querySelector('#approve'),check=document.querySelector('#check'),capture=document.querySelector('#capture');
+let busy=false;
+function show(d){
+ if(d.error){statusEl.textContent=d.error;return;}
+ create.hidden=!!d.id;
+ if(d.approvalUrl&&!d.paid&&d.status!=='APPROVED'&&d.status!=='COMPLETED'){approve.href=d.approvalUrl;approve.hidden=false;}else approve.hidden=true;
+ capture.hidden=d.status!=='APPROVED';
+ statusEl.textContent=d.paid?`Payment completed in Sandbox.\nOrder: ${d.id}\nTotal: USD 33.00\nCapture: ${d.captureId}`:d.status==='NOT_STARTED'?'Ready. Prepare your test checkout when you want to continue.':`Order status: ${d.status}. Payment completion has not been confirmed.`;
+}
+async function run(path,method='GET'){if(busy)return;busy=true;create.disabled=check.disabled=capture.disabled=true;try{const r=await fetch('/api/'+path,{method});show(await r.json());}catch{show({error:'Connection lost. Check the existing order again; do not start another payment.'});}finally{busy=false;create.disabled=check.disabled=capture.disabled=false;}}
+create.onclick=()=>run('create','POST');check.onclick=()=>run('status');capture.onclick=()=>run('capture','POST');
+run(location.pathname==='/return'?'capture':'status',location.pathname==='/return'?'POST':'GET');
+</script></html>

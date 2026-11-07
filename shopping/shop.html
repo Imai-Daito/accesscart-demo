@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AccessCart · Coffee shop</title>
+<style>
+body{font:18px/1.6 system-ui;background:#f4f1ea;color:#20372e;max-width:760px;margin:40px auto;padding:24px}main{background:white;padding:32px;border-radius:20px}button,textarea{font:inherit}button{padding:12px 18px;border-radius:8px;background:#185b45;color:white;border:0;margin:8px 8px 8px 0}button:disabled{opacity:.5}textarea{box-sizing:border-box;width:100%;min-height:100px}button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #b86a00;outline-offset:4px}#status{padding:16px;background:#edf4ef}#reply{white-space:pre-wrap;overflow-wrap:anywhere}small{display:block}label{display:block;margin:16px 0}input{width:20px;height:20px}dt{font-weight:bold}dd{margin-left:0}
+</style>
+<main>
+<p>ACCESSCART / FICTIONAL COFFEE SHOP</p>
+<h1>Find your next coffee</h1>
+<p>Search, compare two coffees, and correct your cart in English. All products are fictional. No delivery. Checkout uses PayPal Sandbox only. No real payment or delivery.</p>
+<p id="privacy">Use Safari for this test. When you choose Start listening, Safari may send microphone audio to Apple for speech recognition. AccessCart does not save audio. When you send a message, its text, recent conversation and demo shopping context are sent to OpenAI for interpretation. Conversation text is held temporarily in server memory, not written to disk; OpenAI's own retention policies apply. Cart, demo inventory and payment recovery records are stored privately on the AccessCart server and linked to this browser. Apple's speech processing depends on its policies and your settings. Do not enter personal or payment details.</p>
+<p><a href="https://www.apple.com/legal/privacy/data/en/ask-siri-dictation/" target="_blank" rel="noreferrer">Apple speech recognition privacy</a></p>
+<p>Sample phrase: <strong>Find low acidity coffee under $15 per bag.</strong></p>
+<button id="start" aria-describedby="privacy">Start listening</button>
+<button id="stop" disabled>Stop listening</button>
+<small>English (US). Listening stops after 20 seconds at most. You can stop earlier.</small>
+<p id="status" role="status" aria-live="polite" aria-atomic="true">Checking voice support…</p>
+<form id="form">
+<label for="transcript">Recognized words or typed message</label>
+<textarea id="transcript" maxlength="500" placeholder="Recognized speech will appear here. You can also type a message."></textarea>
+<p id="recognition-result">No speech recognition result yet.</p>
+<button id="send" type="submit">Send message</button>
+</form>
+<label><input id="read-aloud" type="checkbox"> App read aloud (off for VoiceOver)</label>
+<h2>Assistant reply</h2>
+<p id="reply" tabindex="-1">Your words will appear here after recognition or after you choose Send message.</p>
+<button id="read" disabled>Read reply aloud</button><button id="silence">Stop speaking</button>
+<h2>Your cart</h2><p id="cart">Loading cart…</p><button id="reset" type="button">Start over</button>
+<section aria-labelledby="checkout-heading">
+<h2 id="checkout-heading">Review and pay in Sandbox</h2>
+<p>Check the cart above. After you approve in PayPal, this order cannot be changed. This prototype does not handle returns or refunds.</p>
+<label><input id="purchase-consent" type="checkbox"> I have reviewed the items and total and want to continue to PayPal Sandbox.</label>
+<button id="checkout-prepare" type="button" disabled>Prepare reviewed Sandbox order</button>
+<p id="payment-status" role="status" aria-live="polite" aria-atomic="true">No checkout started.</p>
+<a id="payment-approve" hidden>Continue to PayPal Sandbox</a>
+<button id="payment-check" type="button" hidden>Check this payment again</button>
+<button id="payment-cancel" type="button" hidden>Return to editing this cart</button>
+<p id="payment-order"></p>
+</section><p id="ai-state" role="status"></p><h2>Conversation</h2><ol id="history"></ol><h2>Fixed demo catalog</h2><p>All bags are 250 grams. Shipping is $5 per nonempty order. No tax or extra fees. Stock is independent for each browser.</p><ul id="catalog"></ul><details><summary>Voice connection details</summary>
+<p id="support"></p>
+<p id="progress">Microphone has not been started.</p>
+<dl><dt>Time from Stop to recognized text</dt><dd id="latency">Not measured yet.</dd></dl>
+</details><p><a href="/">Check the existing Sandbox payment</a></p>
+</main>
+<script src="/shop.js"></script>
+<script src="/payment-ui.js"></script>
+</html>

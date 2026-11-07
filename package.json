@@ -1,0 +1,13 @@
+{
+  "name": "accesscart",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A conversational fictional coffee shop using AI and PayPal Sandbox",
+  "engines": {"node": ">=26.9.0"},
+  "scripts": {
+    "start": "node checkout-probe/server.mjs",
+    "test": "node --test --test-concurrency=1 shopping/*.test.mjs payments/*.test.mjs checkout-probe/*.test.mjs"
+  },
+  "license": "MIT"
+}

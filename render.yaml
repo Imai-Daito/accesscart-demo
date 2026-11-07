@@ -1,0 +1,34 @@
+# Ready for owner review. Applying this creates paid Render resources.
+services:
+  - type: web
+    name: accesscart
+    runtime: node
+    plan: 0.5c-512mb
+    region: singapore
+    numInstances: 1
+    buildCommand: node --check checkout-probe/server.mjs
+    startCommand: npm start
+    autoDeployTrigger: 'off'
+    healthCheckPath: /healthz
+    disk:
+      name: accesscart-data
+      mountPath: /var/data/accesscart
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: 26.9.0
+      - key: ACCESSCART_DATA_DIR
+        value: /var/data/accesscart
+      - key: ACCESSCART_PASSPHRASE
+        generateValue: true
+      # A separate new installation starts its own usage ledger.
+      - key: ACCESSCART_INITIAL_RESERVED_YEN
+        value: '0'
+      - key: ACCESSCART_AI_ENABLED
+        value: 'true'
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: PAYPAL_SANDBOX_CLIENT_ID
+        sync: false
+      - key: PAYPAL_SANDBOX_CLIENT_SECRET
+        sync: false
